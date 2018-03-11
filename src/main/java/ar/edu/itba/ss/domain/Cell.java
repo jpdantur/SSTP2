@@ -1,9 +1,6 @@
 package ar.edu.itba.ss.domain;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Cell {
 
@@ -64,5 +61,43 @@ public class Cell {
         int result = rangeX.hashCode();
         result = 31 * result + rangeY.hashCode();
         return result;
+    }
+
+    private Double getWidth(){
+        return rangeX.getHighest() - rangeX.getLowest();
+    }
+
+    public List<Cell> calculateNeighbourCells() {
+        Double w = getWidth();
+        return
+                Arrays.asList(
+                        generateXY(-w,w),           generateXY(0.,w),      generateXY(w,w),
+                        generateXY(-w,0.),                                 generateXY(w,0.),
+                        generateXY(-w,-w),          generateXY(0.,-w),     generateXY(w,-w)
+                );
+    }
+
+    private Cell generateXY(Double xOffset, Double yOffset) {
+        Double x1 = rangeX.getLowest() + xOffset;
+        Double x2 = rangeX.getHighest() + xOffset;
+
+        Double y1 = rangeY.getLowest() + yOffset;
+        Double y2 = rangeY.getHighest() + yOffset;
+
+        if(x1 <0 || y1 <0){
+            return null;
+        }
+
+        Range new_rangex = new Range(x1,x2);
+        Range new_rangey = new Range(y1,y2);
+        return new Cell(new_rangex, new_rangey);
+    }
+
+    public Range getRangeX() {
+        return rangeX;
+    }
+
+    public Range getRangeY() {
+        return rangeY;
     }
 }

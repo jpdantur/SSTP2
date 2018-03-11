@@ -50,6 +50,64 @@ public class Particle {
         return distanceBorderToBorder(particle) <= maxDistance;
     }
 
+    public boolean isNeighbourCloseEnough(Particle particle, Double maxDistance, boolean periodicContourCondition){
+        if( periodicContourCondition){
+            List<Cell> calculated = getCell().calculateNeighbourCells();
+            if(!calculated.contains(particle.getCell())){
+                //debo dar la vuelta
+
+                //defino las direcciones en cada una de las componentes
+                Double newX, newY;
+                newX = particle.getX();
+                newY = particle.getY();
+
+                if(!hasRangeX(calculated, particle.getCell().getRangeX())){
+                    if( getX() - particle.getX() > 0){
+                        newX = particle.getX() + getCell().getRangeX().getHighest();
+                    }else {
+                        newX = particle.getX() - getCell().getRangeX().getHighest();
+                    }
+                }
+
+                if(!hasRangeY(calculated, particle.getCell().getRangeY())){
+                    if( getY() - particle.getY() > 0){
+                        newY = particle.getY() + getCell().getRangeY().getHighest();
+                    }else {
+                        newY = particle.getY() - getCell().getRangeY().getHighest();
+                    }
+                }
+
+
+                Particle newParticle = new Particle(newX, newY, particle.getRadix());
+                return distanceBorderToBorder(newParticle)<= maxDistance;
+            }
+        }
+        return isCloseEnough(particle, maxDistance);
+    }
+
+    private boolean hasRangeX(List<Cell> calculated, Range rangex){
+        for(Cell cell : calculated){
+            if(cell != null && cell.getRangeX().equals(rangex)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasRangeY(List<Cell> calculated, Range rangey){
+        for(Cell cell : calculated){
+            try{
+                if(cell != null && cell.getRangeY().equals(rangey)){
+                    return true;
+                }
+            }catch (Exception e){
+                System.out.print(1);
+            }
+
+        }
+        return false;
+    }
+
     public List<Particle> getOtherParticlesInCell(){
         return getCell().getParticles().stream().filter(p -> !p.equals(this)).collect(Collectors.toList());
     }

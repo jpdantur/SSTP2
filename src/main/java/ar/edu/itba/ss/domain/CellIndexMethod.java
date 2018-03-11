@@ -101,10 +101,28 @@ public class CellIndexMethod {
                 cell2,
                 cell3,
                 cell4
-                ).filter(Objects::nonNull)
+        ).filter(Objects::nonNull)
                 .distinct()
                 .collect(Collectors.toCollection(HashSet::new));
     }
+
+    public Set<Cell> generateSimpleNeighbourCells(Integer x, Integer y){
+        Cell cell1, cell2, cell3, cell4;
+        cell1 = nullIfOutOfBounds(x, y+1);
+        cell2 = nullIfOutOfBounds(x + 1,y + 1);
+        cell3 = nullIfOutOfBounds(x + 1,y);
+        cell4 = nullIfOutOfBounds(x + 1,y - 1);
+
+        return Stream.of(
+                cell1,
+                cell2,
+                cell3,
+                cell4
+        ).filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toCollection(HashSet::new));
+    }
+
 
     private Cell nullIfOutOfBounds(Integer x, int y) {
         if(x < 0 || x >= M){
@@ -124,14 +142,14 @@ public class CellIndexMethod {
      */
     private List<Particle> calculateParticleNeighbours(Particle particle){
         return Stream.concat(
-                    particle.getCell().getNeighbours().stream()
-                    .map(Cell::getParticles)
-                    .flatMap(List::stream)
-                    .filter(p -> p.isCloseEnough(particle, rc))
+                particle.getCell().getNeighbours().stream()
+                        .map(Cell::getParticles)
+                        .flatMap(List::stream)
+                        .filter(p -> particle.isNeighbourCloseEnough(p, rc, periodicContourCondition))
                 ,
-                    particle.getOtherParticlesInCell().stream()
-                    .filter(p -> p.isCloseEnough(particle, rc))
-                ).collect(Collectors.toList());
+                particle.getOtherParticlesInCell().stream()
+                        .filter(p -> p.isCloseEnough(particle, rc))
+        ).collect(Collectors.toList());
     }
 
 }

@@ -27,7 +27,7 @@ public class Printer {
     private Integer selectedParticleIndex;
 
     private static final String FILE_NAME_NEIGHBOURS = "neigbours.txt";
-    private static final String FILE_NAME_OVITO = "ovito.zyx";
+    private static final String FILE_NAME_OVITO = "ovito.xyz";
 
     private static List<Double> COLOR_OUT_OF_SELECTION = Arrays.asList(0.63922,   0.76078,   0.76078);
     private static List<Double> COLOR_NEIGBOURH = Arrays.asList(1.00000,   0.30196,   0.58039);
