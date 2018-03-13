@@ -1,3 +1,5 @@
+package ar.edu.itba.ss;
+
 import ar.edu.itba.ss.domain.Particle;
 import ar.edu.itba.ss.helper.ParticleGenerator;
 import ar.edu.itba.ss.helper.Printer;
@@ -7,6 +9,7 @@ import java.util.Scanner;
 
 public class TestCIM {
     private static final Double RADIX = .1;
+    private static final Double SPEED = 0.03;
 
     public static void main(String[] args) {
         Integer N, M;
@@ -35,7 +38,7 @@ public class TestCIM {
             }
         }
 
-        List<Particle> particles = new ParticleGenerator().generate(N, L, RADIX);
+        List<Particle> particles = new ParticleGenerator().generate(N, L, RADIX,SPEED);
         Printer printer = new Printer(particles, L, M, rc, periodicContourCondition, 0);
         printer.printFiles();
 

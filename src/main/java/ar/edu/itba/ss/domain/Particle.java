@@ -10,12 +10,16 @@ public class Particle {
     private Double y;
     private Double radix;
     private Cell cell;
+    private Double speed;
+    private Double angle;
     private List<Particle> neighbours = new ArrayList<>();
 
-    public Particle(Double x, Double y, Double radix) {
+    public Particle(Double x, Double y, Double radix, Double speed, Double angle) {
         this.x = x;
         this.y = y;
         this.radix = radix;
+        this.speed = speed;
+        this.angle = angle;
     }
 
     public Double getX() {
@@ -80,7 +84,7 @@ public class Particle {
                 }
 
 
-                Particle newParticle = new Particle(newX, newY, particle.getRadix());
+                Particle newParticle = new Particle(newX, newY, particle.getRadix(), particle.getSpeed(), particle.getAngle());
                 return distanceBorderToBorder(newParticle)<= maxDistance;
             }
         }
@@ -128,5 +132,21 @@ public class Particle {
             throw new RuntimeException("La particula no puede ser nula");
         }
         neighbours.add(particle);
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
+    public Double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(Double angle) {
+        this.angle = angle;
     }
 }
