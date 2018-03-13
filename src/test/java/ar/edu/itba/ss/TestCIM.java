@@ -38,7 +38,7 @@ public class TestCIM {
             }
         }
 
-        List<Particle> particles = new ParticleGenerator().generate(N, L, RADIX,SPEED);
+        List<Particle> particles = new ParticleGenerator().generate(N, L,SPEED);
         Printer printer = new Printer(particles, L, M, rc, periodicContourCondition, 0);
         printer.printFiles();
 
