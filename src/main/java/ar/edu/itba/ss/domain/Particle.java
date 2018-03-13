@@ -11,17 +11,15 @@ public class Particle {
 
     private double x;
     private double y;
-    private double radix;
     private Cell cell;
     private double speed;
     private double angle;
     private double nextAngle;
     private List<Particle> neighbours = new ArrayList<>();
 
-    public Particle(double x, double y, double radix, double speed, double angle) {
+    public Particle(double x, double y, double speed, double angle) {
         this.x = x;
         this.y = y;
-        this.radix = radix;
         this.speed = speed;
         this.angle = angle;
     }
@@ -32,10 +30,6 @@ public class Particle {
 
     public double getY() {
         return y;
-    }
-
-    public double getRadix() {
-        return radix;
     }
 
     public void getNewAngle(double eta, RandomDataGenerator rng) {
@@ -62,10 +56,6 @@ public class Particle {
         return Math.sqrt(Math.pow(difx, 2) + Math.pow(dify, 2));
     }
 
-    public double distanceBorderToBorder(Particle particle) {
-        return distanceCenterToCenter(particle) - (getRadix() + particle.getRadix());
-    }
-
     public Cell getCell() {
         return cell;
     }
@@ -75,7 +65,7 @@ public class Particle {
     }
 
     public boolean isCloseEnough(Particle particle, double maxDistance) {
-        return distanceBorderToBorder(particle) <= maxDistance;
+        return distanceCenterToCenter(particle) <= maxDistance;
     }
 
     public boolean isNeighbourCloseEnough(Particle particle, double maxDistance, boolean periodicContourCondition) {
@@ -90,8 +80,8 @@ public class Particle {
 
 
 
-                Particle newParticle = new Particle(newX, newY, particle.getRadix(), particle.getSpeed(), particle.getAngle());
-                return distanceBorderToBorder(newParticle) <= maxDistance;
+                Particle newParticle = new Particle(newX, newY, particle.getSpeed(), particle.getAngle());
+                return distanceCenterToCenter(newParticle) <= maxDistance;
             }
         }
         return isCloseEnough(particle, maxDistance);
@@ -152,7 +142,7 @@ public class Particle {
 
     @Override
     public String toString() {
-        return String.format("(%f,%f) r= %f", x, y, radix);
+        return String.format("(%f,%f)", x, y);
     }
 
     public void addNeighbour(Particle particle) {

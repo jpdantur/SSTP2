@@ -15,12 +15,11 @@ import java.util.stream.IntStream;
 public class ParticleGenerator {
 
     public List<Particle> generate(int N, double L, double radix, double speed) {
-        int seed = 50000;// new double(Math.random()*100000).longValue();
+        int seed = 50000;
         RandomDataGenerator generator = new RandomDataGenerator(new JDKRandomGenerator(seed));
         return IntStream.range(0,N)
                 .mapToObj(i ->new Particle(generator.nextUniform(0,L,true),
                         generator.nextUniform(0,L,true),
-                        radix,
                         speed,
                         generator.nextUniform(0,2* FastMath.PI,true)))
                 .collect(Collectors.toList());

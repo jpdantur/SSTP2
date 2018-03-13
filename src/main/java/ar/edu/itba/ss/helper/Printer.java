@@ -92,8 +92,8 @@ public class Printer {
         return particles.size() + "\n" +
                 particles.size() + "\n" +
                 particles.stream()
-                        .map(p -> String.format("%.6f %.6f %.6f %.5f %.5f %.5f",
-                                p.getX(),p.getY(), p.getRadix(), getRed(p), getGeen(p), getBlue(p)))
+                        .map(p -> String.format("%.6f %.6f %.5f %.5f %.5f",
+                                p.getX(),p.getY(), getRed(p), getGeen(p), getBlue(p)))
                         .collect(Collectors.joining("\n")).replaceAll(",","\\.");
 /*       sb.append(particles.size()).append("\n");
         sb.append(particles.size()).append("\n");
