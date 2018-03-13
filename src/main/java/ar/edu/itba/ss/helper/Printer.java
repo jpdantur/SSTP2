@@ -20,11 +20,11 @@ import static java.util.stream.Collectors.joining;
 public class Printer {
 
     private List<Particle> particles;
-    private Double L;
-    private Integer M;
-    private Double rc;
+    private double L;
+    private int M;
+    private double rc;
     private boolean periodicContourCondition;
-    private Integer selectedParticleIndex;
+    private int selectedParticleIndex;
 
     private static final String FILE_NAME_NEIGHBOURS = "neigbours.txt";
     private static final String FILE_NAME_OVITO = "ovito.xyz";
@@ -36,8 +36,8 @@ public class Printer {
     private Map<Particle, List<Particle>> calculated;
     private Map<Particle, List<Double>> particlesColors = new HashMap<>();
 
-    public Printer(List<Particle> particles, Double l, Integer m, Double rc, boolean periodicContourCondition, Integer selectedParticleIndex) {
-        if(particles == null || l == null || m == null || rc == null || selectedParticleIndex == null){
+    public Printer(List<Particle> particles, double l, int m, double rc, boolean periodicContourCondition, int selectedParticleIndex) {
+        if(particles == null){
             throw new RuntimeException("Todos los argumentos son obligatorios");
         }
 
@@ -101,15 +101,15 @@ public class Printer {
         return sb.toString();
     }
 
-    private Double getBlue(Particle p) {
+    private double getBlue(Particle p) {
         return particlesColors.get(p).get(2);
     }
 
-    private Double getGeen(Particle p) {
+    private double getGeen(Particle p) {
         return particlesColors.get(p).get(1);
     }
 
-    private Double getRed(Particle p) {
+    private double getRed(Particle p) {
         return particlesColors.get(p).get(0);
     }
 

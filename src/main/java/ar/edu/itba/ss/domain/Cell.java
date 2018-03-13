@@ -63,12 +63,12 @@ public class Cell {
         return result;
     }
 
-    private Double getWidth(){
+    private double getWidth(){
         return rangeX.getHighest() - rangeX.getLowest();
     }
 
     public List<Cell> calculateNeighbourCells() {
-        Double w = getWidth();
+        double w = getWidth();
         return
                 Arrays.asList(
                         generateXY(-w,w),           generateXY(0.,w),      generateXY(w,w),
@@ -77,12 +77,12 @@ public class Cell {
                 );
     }
 
-    private Cell generateXY(Double xOffset, Double yOffset) {
-        Double x1 = rangeX.getLowest() + xOffset;
-        Double x2 = rangeX.getHighest() + xOffset;
+    private Cell generateXY(double xOffset, double yOffset) {
+        double x1 = rangeX.getLowest() + xOffset;
+        double x2 = rangeX.getHighest() + xOffset;
 
-        Double y1 = rangeY.getLowest() + yOffset;
-        Double y2 = rangeY.getHighest() + yOffset;
+        double y1 = rangeY.getLowest() + yOffset;
+        double y2 = rangeY.getHighest() + yOffset;
 
         if(x1 <0 || y1 <0){
             return null;

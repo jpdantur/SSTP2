@@ -9,16 +9,16 @@ import java.util.stream.Stream;
 
 public class CellIndexMethod {
 
-    private Integer M;
-    private Double L;
-    private Double rc;
+    private int M;
+    private double L;
+    private double rc;
     private List<Particle> particles = new ArrayList<>();
     private Cell[][] environment;
     private boolean periodicContourCondition;
 
     private Duration timeElapsed;
 
-    public CellIndexMethod(Integer m, Double l, Double rc, List<Particle> particles, boolean periodicContourCondition) {
+    public CellIndexMethod(int m, double l, double rc, List<Particle> particles, boolean periodicContourCondition) {
         M = m;
         L = l;
         this.rc = rc;
@@ -31,7 +31,7 @@ public class CellIndexMethod {
     private void initializeEnvironment() {
         //creo cells
         environment = new Cell[M][M];
-        Double offset = L/M;
+        double offset = L/M;
 
         //calculo rangos del environment
         List<Range> ranges = DoubleStream.iterate(0., d -> d + offset)
@@ -40,8 +40,8 @@ public class CellIndexMethod {
                 .collect(Collectors.toList());
 
         //inicializo environment con celdas y asigno las particulas a cada celda
-        for (Integer x = 0; x < M; x++) {
-            for (Integer y = 0; y < M; y++) {
+        for (int x = 0; x < M; x++) {
+            for (int y = 0; y < M; y++) {
                 Range rangex = ranges.get(x);
                 Range rangey = ranges.get(y);
 
@@ -55,8 +55,8 @@ public class CellIndexMethod {
         }
 
         //calculo vecinos para cada celda
-        for (Integer x = 0; x < M; x++) {
-            for (Integer y = 0; y < M; y++) {
+        for (int x = 0; x < M; x++) {
+            for (int y = 0; y < M; y++) {
                 environment[x][y].setNeigbours(calculateParticleNeighbours(x,y));
             }
         }
@@ -82,7 +82,7 @@ public class CellIndexMethod {
      * (x,y)   (x+1,y)
      *         (x+1,y-1)
      **/
-    private Set<Cell> calculateParticleNeighbours(Integer x, Integer y){
+    private Set<Cell> calculateParticleNeighbours(int x, int y){
         Cell cell1, cell2, cell3, cell4;
         if(periodicContourCondition){
             cell1 = environment[x][(y + 1) % M];
@@ -106,7 +106,7 @@ public class CellIndexMethod {
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    public Set<Cell> generateSimpleNeighbourCells(Integer x, Integer y){
+    public Set<Cell> generateSimpleNeighbourCells(int x, int y){
         Cell cell1, cell2, cell3, cell4;
         cell1 = nullIfOutOfBounds(x, y+1);
         cell2 = nullIfOutOfBounds(x + 1,y + 1);
@@ -124,7 +124,7 @@ public class CellIndexMethod {
     }
 
 
-    private Cell nullIfOutOfBounds(Integer x, int y) {
+    private Cell nullIfOutOfBounds(int x, int y) {
         if(x < 0 || x >= M){
             return null;
         }else if(y < 0 || y >= M){

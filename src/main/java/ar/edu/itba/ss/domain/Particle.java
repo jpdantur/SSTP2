@@ -6,15 +6,16 @@ import java.util.stream.Collectors;
 
 public class Particle {
 
-    private Double x;
-    private Double y;
-    private Double radix;
+    private double x;
+    private double y;
+    private double radix;
     private Cell cell;
-    private Double speed;
-    private Double angle;
+    private double speed;
+    private double angle;
+    private double nextAngle;
     private List<Particle> neighbours = new ArrayList<>();
 
-    public Particle(Double x, Double y, Double radix, Double speed, Double angle) {
+    public Particle(double x, double y, double radix, double speed, double angle) {
         this.x = x;
         this.y = y;
         this.radix = radix;
@@ -22,25 +23,28 @@ public class Particle {
         this.angle = angle;
     }
 
-    public Double getX() {
+    public double getX() {
         return x;
     }
 
-    public Double getY() {
+    public double getY() {
         return y;
     }
 
-    public Double getRadix() {
+    public double getRadix() {
         return radix;
     }
 
-    public Double distanceCenterToCenter(Particle particle){
-        Double difx = getX() - particle.getX();
-        Double dify = getY() - particle.getY();
-        return Math.sqrt(Math.pow(difx,2)+ Math.pow(dify,2));
+    public void updateLocation() {
     }
 
-    public Double distanceBorderToBorder(Particle particle){
+    public double distanceCenterToCenter(Particle particle) {
+        double difx = getX() - particle.getX();
+        double dify = getY() - particle.getY();
+        return Math.sqrt(Math.pow(difx, 2) + Math.pow(dify, 2));
+    }
+
+    public double distanceBorderToBorder(Particle particle) {
         return distanceCenterToCenter(particle) - (getRadix() + particle.getRadix());
     }
 
@@ -52,61 +56,61 @@ public class Particle {
         this.cell = cell;
     }
 
-    public boolean isCloseEnough(Particle particle, Double maxDistance) {
+    public boolean isCloseEnough(Particle particle, double maxDistance) {
         return distanceBorderToBorder(particle) <= maxDistance;
     }
 
-    public boolean isNeighbourCloseEnough(Particle particle, Double maxDistance, boolean periodicContourCondition){
-        if( periodicContourCondition){
+    public boolean isNeighbourCloseEnough(Particle particle, double maxDistance, boolean periodicContourCondition) {
+        if (periodicContourCondition) {
             List<Cell> calculated = getCell().calculateNeighbourCells();
-            if(!calculated.contains(particle.getCell())){
+            if (!calculated.contains(particle.getCell())) {
                 //debo dar la vuelta
 
                 //defino las direcciones en cada una de las componentes
-                Double newX, newY;
+                double newX, newY;
                 newX = particle.getX();
                 newY = particle.getY();
 
-                if(!hasRangeX(calculated, particle.getCell().getRangeX())){
-                    if( getX() - particle.getX() > 0){
+                if (!hasRangeX(calculated, particle.getCell().getRangeX())) {
+                    if (getX() - particle.getX() > 0) {
                         newX = particle.getX() + getCell().getRangeX().getHighest();
-                    }else {
+                    } else {
                         newX = particle.getX() - getCell().getRangeX().getHighest();
                     }
                 }
 
-                if(!hasRangeY(calculated, particle.getCell().getRangeY())){
-                    if( getY() - particle.getY() > 0){
+                if (!hasRangeY(calculated, particle.getCell().getRangeY())) {
+                    if (getY() - particle.getY() > 0) {
                         newY = particle.getY() + getCell().getRangeY().getHighest();
-                    }else {
+                    } else {
                         newY = particle.getY() - getCell().getRangeY().getHighest();
                     }
                 }
 
 
                 Particle newParticle = new Particle(newX, newY, particle.getRadix(), particle.getSpeed(), particle.getAngle());
-                return distanceBorderToBorder(newParticle)<= maxDistance;
+                return distanceBorderToBorder(newParticle) <= maxDistance;
             }
         }
         return isCloseEnough(particle, maxDistance);
     }
 
-    private boolean hasRangeX(List<Cell> calculated, Range rangex){
-        for(Cell cell : calculated){
-            if(cell != null && cell.getRangeX().equals(rangex)){
+    private boolean hasRangeX(List<Cell> calculated, Range rangex) {
+        for (Cell cell : calculated) {
+            if (cell != null && cell.getRangeX().equals(rangex)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean hasRangeY(List<Cell> calculated, Range rangey){
-        for(Cell cell : calculated){
-            try{
-                if(cell != null && cell.getRangeY().equals(rangey)){
+    private boolean hasRangeY(List<Cell> calculated, Range rangey) {
+        for (Cell cell : calculated) {
+            try {
+                if (cell != null && cell.getRangeY().equals(rangey)) {
                     return true;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.print(1);
             }
 
@@ -114,11 +118,11 @@ public class Particle {
         return false;
     }
 
-    public List<Particle> getOtherParticlesInCell(){
+    public List<Particle> getOtherParticlesInCell() {
         return getCell().getParticles().stream().filter(p -> !p.equals(this)).collect(Collectors.toList());
     }
 
-    public String printParticle(){
+    public String printParticle() {
         return String.format("(%f,%f)", x, y);
     }
 
@@ -127,26 +131,26 @@ public class Particle {
         return String.format("(%f,%f) r= %f", x, y, radix);
     }
 
-    public void addNeighbour(Particle particle){
-        if(particle == null){
+    public void addNeighbour(Particle particle) {
+        if (particle == null) {
             throw new RuntimeException("La particula no puede ser nula");
         }
         neighbours.add(particle);
     }
 
-    public Double getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Double speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
-    public Double getAngle() {
+    public double getAngle() {
         return angle;
     }
 
-    public void setAngle(Double angle) {
+    public void setAngle(double angle) {
         this.angle = angle;
     }
 }

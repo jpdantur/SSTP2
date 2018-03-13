@@ -7,23 +7,23 @@ import java.util.Objects;
  * [,)
  */
 public class Range {
-    private Double lowest;
-    private Double highest;
+    private double lowest;
+    private double highest;
 
-    public Range(Double lowest, Double highest) {
+    public Range(double lowest, double highest) {
         this.lowest = lowest;
         this.highest = highest;
     }
 
-    public Double getLowest() {
+    public double getLowest() {
         return lowest;
     }
 
-    public Double getHighest() {
+    public double getHighest() {
         return highest;
     }
 
-    public boolean isInRange(Double value){
+    public boolean isInRange(double value){
         return lowest <= value && value < highest;
     }
 

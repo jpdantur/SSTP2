@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TestCIM {
-    private static final Double RADIX = .1;
-    private static final Double SPEED = 0.03;
+    private static final double RADIX = .1;
+    private static final double SPEED = 0.03;
 
     public static void main(String[] args) {
-        Integer N, M;
-        Double L, rc;
+        int N, M;
+        double L, rc;
         boolean periodicContourCondition;
         while (true) {
             try {
