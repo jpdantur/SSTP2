@@ -85,25 +85,9 @@ public class Particle {
                 //debo dar la vuelta
 
                 //defino las direcciones en cada una de las componentes
-                double newX, newY;
-                newX = particle.getX();
-                newY = particle.getY();
+                double newX = getNewX(calculated,particle);
+                double newY = getNewY(calculated,particle);
 
-                if (!hasRangeX(calculated, particle.getCell().getRangeX())) {
-                    if (getX() - particle.getX() > 0) {
-                        newX = particle.getX() + getCell().getRangeX().getHighest();
-                    } else {
-                        newX = particle.getX() - getCell().getRangeX().getHighest();
-                    }
-                }
-
-                if (!hasRangeY(calculated, particle.getCell().getRangeY())) {
-                    if (getY() - particle.getY() > 0) {
-                        newY = particle.getY() + getCell().getRangeY().getHighest();
-                    } else {
-                        newY = particle.getY() - getCell().getRangeY().getHighest();
-                    }
-                }
 
 
                 Particle newParticle = new Particle(newX, newY, particle.getRadix(), particle.getSpeed(), particle.getAngle());
@@ -113,9 +97,31 @@ public class Particle {
         return isCloseEnough(particle, maxDistance);
     }
 
+    private double getNewX(List<Cell> calculated, Particle particle) {
+        if (!hasRangeX(calculated, particle.getCell().getRangeX())) {
+            if (getX() - particle.getX() > 0) {
+                return particle.getX() + getCell().getRangeX().getHighest();
+            } else {
+                return particle.getX() - getCell().getRangeX().getHighest();
+            }
+        }
+        return getX();
+    }
+    private double getNewY(List<Cell> calculated, Particle particle) {
+        if (!hasRangeY(calculated, particle.getCell().getRangeY())) {
+            if (getY() - particle.getY() > 0) {
+                return particle.getY() + getCell().getRangeY().getHighest();
+            } else {
+                return particle.getY() - getCell().getRangeY().getHighest();
+            }
+        }
+        return getY();
+
+    }
+
     private boolean hasRangeX(List<Cell> calculated, Range rangex) {
-        for (Cell cell : calculated) {
-            if (cell != null && cell.getRangeX().equals(rangex)) {
+        for (Cell c : calculated) {
+            if (c != null && c.getRangeX().equals(rangex)) {
                 return true;
             }
         }
@@ -123,9 +129,9 @@ public class Particle {
     }
 
     private boolean hasRangeY(List<Cell> calculated, Range rangey) {
-        for (Cell cell : calculated) {
+        for (Cell c : calculated) {
             try {
-                if (cell != null && cell.getRangeY().equals(rangey)) {
+                if (c != null && c.getRangeY().equals(rangey)) {
                     return true;
                 }
             } catch (Exception e) {
