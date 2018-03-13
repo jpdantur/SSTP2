@@ -1,5 +1,8 @@
 package ar.edu.itba.ss.domain;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+import org.apache.commons.math3.util.FastMath;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +38,22 @@ public class Particle {
         return radix;
     }
 
+    public void getNewAngle(double eta, RandomDataGenerator rng) {
+        nextAngle = angle;
+        for (Particle p:neighbours) {
+            nextAngle += p.angle;
+        }
+        nextAngle/=(neighbours.size()+1);
+        nextAngle+=rng.nextUniform(-eta/2,eta/2,true);
+    }
+
+    public void updateAngle() {
+        angle=nextAngle;
+    }
+
     public void updateLocation() {
+        this.x+=speed*FastMath.cos(angle);
+        this.y+=speed*FastMath.sin(angle);
     }
 
     public double distanceCenterToCenter(Particle particle) {
