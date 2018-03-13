@@ -141,7 +141,7 @@ public class CellIndexMethod {
      * filtrar las particulas que esten a menos de rc de la particle
      */
     private List<Particle> calculateParticleNeighbours(Particle particle){
-        return Stream.concat(
+        List<Particle> particles = Stream.concat(
                 particle.getCell().getNeighbours().stream()
                         .map(Cell::getParticles)
                         .flatMap(List::stream)
@@ -150,6 +150,11 @@ public class CellIndexMethod {
                 particle.getOtherParticlesInCell().stream()
                         .filter(p -> p.isCloseEnough(particle, rc))
         ).collect(Collectors.toList());
+
+        particles.forEach( p -> p.addNeighbour(particle));
+        particles.forEach( p -> particle.addNeighbour(p));
+
+        return particles;
     }
 
 }

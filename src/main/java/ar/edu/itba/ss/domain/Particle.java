@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ public class Particle {
     private Double y;
     private Double radix;
     private Cell cell;
+    private List<Particle> neighbours = new ArrayList<>();
 
     public Particle(Double x, Double y, Double radix) {
         this.x = x;
@@ -119,5 +121,12 @@ public class Particle {
     @Override
     public String toString() {
         return String.format("(%f,%f) r= %f", x, y, radix);
+    }
+
+    public void addNeighbour(Particle particle){
+        if(particle == null){
+            throw new RuntimeException("La particula no puede ser nula");
+        }
+        neighbours.add(particle);
     }
 }
