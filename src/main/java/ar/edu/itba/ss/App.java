@@ -51,12 +51,15 @@ public class App
             }
         }
         int seed = 5000;
-        RandomDataGenerator rng = new RandomDataGenerator(new JDKRandomGenerator(seed));
+        RandomDataGenerator rng = new RandomDataGenerator(new JDKRandomGenerator());
 
         List<Particle> particles = new ParticleGenerator().generate(n, l,speed, rng);
         Printer printer = new Printer(particles, l, m, rc,eta, periodicContourCondition, 0);
         for (int i=0;i<t;i++) {
             long start = System.currentTimeMillis();
+            for (Particle p:particles) {
+                p.clearNeighbours();
+            }
             printer.calculate();
             printer.printFiles(i);
             printer.update(rng);

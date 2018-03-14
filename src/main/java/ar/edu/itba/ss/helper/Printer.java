@@ -140,6 +140,8 @@ public class Printer {
     }
 
     public void update(RandomDataGenerator rng) {
+        //long start = System.currentTimeMillis();
+        //System.out.println(particles.size());
         for (Particle p:particles) {
             p.getNewAngle(eta, rng);
             p.updateLocation(L);
@@ -147,5 +149,7 @@ public class Printer {
         for (Particle p:particles) {
             p.updateAngle();
         }
+        //long end = System.currentTimeMillis();
+        //System.out.println("Wassap " + (end-start));
     }
 }

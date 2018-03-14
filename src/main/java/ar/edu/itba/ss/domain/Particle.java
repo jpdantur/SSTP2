@@ -34,6 +34,7 @@ public class Particle {
     }
 
     public void getNewAngle(double eta, RandomDataGenerator rng) {
+        //System.out.println(neighbours.size());
         double nextSin = FastMath.sin(angle);
         double nextCos = FastMath.cos(angle);
         for (Particle p:neighbours) {
@@ -42,7 +43,10 @@ public class Particle {
         }
         nextSin/=(neighbours.size()+1);
         nextCos/=(neighbours.size()+1);
+        //long start = System.currentTimeMillis();
         nextAngle=FastMath.atan2(nextSin,nextCos)+rng.nextUniform(-eta/2,eta/2,true);
+        //long end = System.currentTimeMillis();
+        //System.out.println("atan: "+ (end-start));
     }
 
     public void updateAngle() {
@@ -180,5 +184,9 @@ public class Particle {
 
     public void setAngle(double angle) {
         this.angle = angle;
+    }
+
+    public void clearNeighbours() {
+        neighbours.clear();
     }
 }
