@@ -160,7 +160,7 @@ public class Particle {
 
     @Override
     public String toString() {
-        return String.format(Locale.US,"%.6f %.6f %.6f %.6f", x, y, getVx(),getVy());
+        return String.format(Locale.US,"%.6f %.6f %.6f %.6f %.6f", x, y, getVx(),getVy(), angle);
     }
 
     public void addNeighbour(Particle particle) {

@@ -7,6 +7,7 @@
 .idea/
 *.iml
 *.iws
+*.xyz
 
 # Mac
 .DS_Store
@@ -14,5 +15,3 @@
 # Maven
 log/
 target/
-
-*.xyz
