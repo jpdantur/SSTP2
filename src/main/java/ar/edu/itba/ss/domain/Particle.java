@@ -34,12 +34,15 @@ public class Particle {
     }
 
     public void getNewAngle(double eta, RandomDataGenerator rng) {
-        nextAngle = angle;
+        double nextSin = FastMath.sin(angle);
+        double nextCos = FastMath.cos(angle);
         for (Particle p:neighbours) {
-            nextAngle += p.angle;
+            nextSin += FastMath.sin(p.angle);
+            nextCos += FastMath.cos(p.angle);
         }
-        nextAngle/=(neighbours.size()+1);
-        nextAngle+=rng.nextUniform(-eta/2,eta/2,true);
+        nextSin/=(neighbours.size()+1);
+        nextCos/=(neighbours.size()+1);
+        nextAngle=FastMath.atan2(nextSin,nextCos)+rng.nextUniform(-eta/2,eta/2,true);
     }
 
     public void updateAngle() {

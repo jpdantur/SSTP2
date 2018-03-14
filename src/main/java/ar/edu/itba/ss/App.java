@@ -56,10 +56,12 @@ public class App
         List<Particle> particles = new ParticleGenerator().generate(n, l,speed, rng);
         Printer printer = new Printer(particles, l, m, rc,eta, periodicContourCondition, 0);
         for (int i=0;i<t;i++) {
+            long start = System.currentTimeMillis();
             printer.calculate();
             printer.printFiles(i);
             printer.update(rng);
-            System.out.println(t);
+            long end = System.currentTimeMillis();
+            System.out.println(i + " - " + (end-start) + " ms");
         }
 
     }
