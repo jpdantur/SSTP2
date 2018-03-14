@@ -5,6 +5,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Particle {
@@ -45,12 +46,22 @@ public class Particle {
         angle=nextAngle;
     }
 
-    public void updateLocation() {
+    public void updateLocation(double length) {
+
         this.x+=speed*FastMath.cos(angle);
         this.y+=speed*FastMath.sin(angle);
+        if (this.x>length)
+            this.x-=length;
+        else if (this.x<0)
+            this.x+=length;
+        if (this.y>length)
+            this.y-=length;
+        else if (this.y<0)
+            this.y+=length;
+
     }
 
-    public double distanceCenterToCenter(Particle particle) {
+    private double distanceCenterToCenter(Particle particle) {
         double difx = getX() - particle.getX();
         double dify = getY() - particle.getY();
         return Math.sqrt(Math.pow(difx, 2) + Math.pow(dify, 2));
@@ -80,7 +91,7 @@ public class Particle {
 
 
 
-                Particle newParticle = new Particle(newX, newY, particle.getSpeed(), particle.getAngle());
+                Particle newParticle = new Particle(newX, newY, particle.speed, particle.getAngle());
                 return distanceCenterToCenter(newParticle) <= maxDistance;
             }
         }
@@ -142,7 +153,7 @@ public class Particle {
 
     @Override
     public String toString() {
-        return String.format("(%f,%f)", x, y);
+        return String.format(Locale.US,"%.6f %.6f %.6f %.6f", x, y, getVx(),getVy());
     }
 
     public void addNeighbour(Particle particle) {
@@ -152,12 +163,12 @@ public class Particle {
         neighbours.add(particle);
     }
 
-    public double getSpeed() {
-        return speed;
+    public double getVx() {
+        return speed*FastMath.cos(angle);
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public double getVy() {
+        return speed*FastMath.sin(angle);
     }
 
     public double getAngle() {

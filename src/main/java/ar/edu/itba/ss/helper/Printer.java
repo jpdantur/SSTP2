@@ -2,10 +2,12 @@ package ar.edu.itba.ss.helper;
 
 import ar.edu.itba.ss.domain.CellIndexMethod;
 import ar.edu.itba.ss.domain.Particle;
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +21,14 @@ import static java.util.stream.Collectors.joining;
  */
 public class Printer {
 
+    private double eta;
     private List<Particle> particles;
     private double L;
     private int M;
     private double rc;
     private boolean periodicContourCondition;
     private int selectedParticleIndex;
+    private int time=0;
 
     private static final String FILE_NAME_NEIGHBOURS = "neigbours.txt";
     private static final String FILE_NAME_OVITO = "ovito.xyz";
@@ -36,7 +40,7 @@ public class Printer {
     private Map<Particle, List<Particle>> calculated;
     private Map<Particle, List<Double>> particlesColors = new HashMap<>();
 
-    public Printer(List<Particle> particles, double l, int m, double rc, boolean periodicContourCondition, int selectedParticleIndex) {
+    public Printer(List<Particle> particles, double l, int m, double rc, double eta, boolean periodicContourCondition, int selectedParticleIndex) {
         if(particles == null){
             throw new RuntimeException("Todos los argumentos son obligatorios");
         }
@@ -53,11 +57,18 @@ public class Printer {
         L = l;
         M = m;
         this.rc = rc;
+        this.eta=eta;
         this.periodicContourCondition = periodicContourCondition;
         this.selectedParticleIndex = selectedParticleIndex;
 
-        calculate();
-        calculateColors();
+        //calculate();
+        //calculateColors();
+        try{
+            Files.write(Paths.get(FILE_NAME_OVITO),"".getBytes());
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void calculateColors() {
@@ -71,38 +82,29 @@ public class Printer {
                 .forEach(p-> particlesColors.put(p, COLOR_OUT_OF_SELECTION));
     }
 
-    public void printFiles(){
-        printNeighbours();
-        printForOvito();
+    public void printFiles(int time){
+        //printNeighbours();
+        printForOvito(time);
     }
 
     private void printStringToFile(String filename, String content){
         try {
-            Files.write(Paths.get(filename), content.getBytes());
+            Files.write(Paths.get(filename), content.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.out.println("No se pudo crear el archivo "+filename);
         }
     }
 
-    private void printForOvito() {
-        printStringToFile(FILE_NAME_OVITO, printParticles());
+    private void printForOvito(int time) {
+        printStringToFile(FILE_NAME_OVITO, printParticles(time));
     }
 
-    private String printParticles() {
-        return particles.size() + "\n" +
-                particles.size() + "\n" +
+    private String printParticles(int time) {
+        return particles.size()+"\n"+
+                time + "\n" +
                 particles.stream()
-                        .map(p -> String.format("%.6f %.6f %.5f %.5f %.5f",
-                                p.getX(),p.getY(), getRed(p), getGeen(p), getBlue(p)))
-                        .collect(Collectors.joining("\n")).replaceAll(",","\\.");
-/*       sb.append(particles.size()).append("\n");
-        sb.append(particles.size()).append("\n");
-        sb.append(
-                particles.stream()
-                        .map(p -> String.format("%.6f %.6f %.6f %.5f %.5f %.5f",
-                                p.getX(),p.getY(), p.getRadix(), getRed(p), getGeen(p), getBlue(p)))
-                        .collect(Collectors.joining("\n")).replaceAll(",","\\.")
-        ); */
+                        .map(Particle::toString)
+                        .collect(Collectors.joining("\n")) +"\n";
     }
 
     private double getBlue(Particle p) {
@@ -131,9 +133,19 @@ public class Printer {
         printStringToFile(FILE_NAME_NEIGHBOURS, sb.toString());
     }
 
-    private void calculate() {
-        CellIndexMethod cim = new CellIndexMethod(M,L, rc, particles, periodicContourCondition);
+    public void calculate() {
+        CellIndexMethod cim = new CellIndexMethod(M, L, rc, particles, periodicContourCondition);
         calculated = cim.calculate();
-        System.out.println("tiempo de procesamiento ( milisegundos ): " +cim.getTimeElapsed().toMillis());
+        //System.out.println("tiempo de procesamiento ( milisegundos ): " + cim.getTimeElapsed().toMillis());
+    }
+
+    public void update(RandomDataGenerator rng) {
+        for (Particle p:particles) {
+            p.getNewAngle(eta, rng);
+            p.updateLocation(L);
+        }
+        for (Particle p:particles) {
+            p.updateAngle();
+        }
     }
 }

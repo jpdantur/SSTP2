@@ -14,9 +14,7 @@ import java.util.stream.IntStream;
  */
 public class ParticleGenerator {
 
-    public List<Particle> generate(int N, double L, double speed) {
-        int seed = 50000;
-        RandomDataGenerator generator = new RandomDataGenerator(new JDKRandomGenerator(seed));
+    public List<Particle> generate(int N, double L, double speed, RandomDataGenerator generator) {
         return IntStream.range(0,N)
                 .mapToObj(i ->new Particle(generator.nextUniform(0,L,true),
                         generator.nextUniform(0,L,true),
