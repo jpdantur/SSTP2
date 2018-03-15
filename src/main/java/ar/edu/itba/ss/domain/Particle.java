@@ -45,6 +45,9 @@ public class Particle {
         nextSin/=(neighbours.size()+1);
         nextCos/=(neighbours.size()+1);
         //long start = System.currentTimeMillis();
+        if(eta==0.){
+            eta=0.000000001;
+        }
         nextAngle=FastMath.atan2(nextSin,nextCos)+rng.nextUniform(-eta/2,eta/2,true);
         //long end = System.currentTimeMillis();
         //System.out.println("atan: "+ (end-start));

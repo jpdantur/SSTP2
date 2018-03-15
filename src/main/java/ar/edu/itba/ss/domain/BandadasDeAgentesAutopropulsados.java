@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.domain;
 
+import ar.edu.itba.ss.helper.DependecyPrinter;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
@@ -22,7 +23,8 @@ public class BandadasDeAgentesAutopropulsados {
     private RandomDataGenerator rng;
     private Map<Particle, List<Particle>> calculated;
 
-    public BandadasDeAgentesAutopropulsados(List<Particle> particles, double l, int m, double rc, double eta, boolean periodicContourCondition, int steps) {
+    public BandadasDeAgentesAutopropulsados(List<Particle> particles, double l, int m, double rc, double eta,
+                                            boolean periodicContourCondition, int steps, RandomDataGenerator rng) {
         if(particles == null){
             throw new RuntimeException("Todos los argumentos son obligatorios");
         }
@@ -43,10 +45,10 @@ public class BandadasDeAgentesAutopropulsados {
         this.periodicContourCondition = periodicContourCondition;
         this.steps = steps;
 
-        rng = new RandomDataGenerator(new JDKRandomGenerator());
+        this.rng = rng;
     }
 
-    public void run(){
+    public void run(DependecyPrinter printer){
         for (int i=0;i<steps;i++) {
             //limpieza de valores anteriores de vecinos
             for (Particle p:particles) {
@@ -57,7 +59,9 @@ public class BandadasDeAgentesAutopropulsados {
             CellIndexMethod cim = new CellIndexMethod(M, L, rc, particles, periodicContourCondition);
             calculated = cim.calculate();
 
-            //printer.printFiles(i);
+            if(printer != null){
+                printer.printFiles(i, particles);
+            }
 
             //actualizo angulo y posiciones
             for (Particle p:particles) {
@@ -68,5 +72,9 @@ public class BandadasDeAgentesAutopropulsados {
                 p.updateAngle();
             }
         }
+    }
+
+    public List<Particle> getParticles() {
+        return particles;
     }
 }

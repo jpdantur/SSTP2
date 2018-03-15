@@ -1,5 +1,7 @@
 package ar.edu.itba.ss;
+import ar.edu.itba.ss.domain.BandadasDeAgentesAutopropulsados;
 import ar.edu.itba.ss.domain.Particle;
+import ar.edu.itba.ss.helper.DependecyPrinter;
 import ar.edu.itba.ss.helper.ParticleGenerator;
 import ar.edu.itba.ss.helper.Printer;
 import org.apache.commons.math3.random.*;
@@ -51,9 +53,20 @@ public class App
             }
         }
         int seed = 5000;
-        RandomDataGenerator rng = new RandomDataGenerator(new JDKRandomGenerator());
-
+        RandomDataGenerator rng = new RandomDataGenerator(new JDKRandomGenerator(seed));
         List<Particle> particles = new ParticleGenerator().generate(n, l,speed, rng);
+
+        //nuevo codigo inicio
+        BandadasDeAgentesAutopropulsados alg = new BandadasDeAgentesAutopropulsados(particles, l,
+                m, rc,eta, periodicContourCondition, t, rng);
+        alg.run( new DependecyPrinter(l));
+
+
+        //nuevo codigo fin
+
+
+
+        /*
         Printer printer = new Printer(particles, l, m, rc,eta, periodicContourCondition, 0);
         for (int i=0;i<t;i++) {
             long start = System.currentTimeMillis();
@@ -65,7 +78,7 @@ public class App
             printer.update(rng);
             long end = System.currentTimeMillis();
             System.out.println(i + " - " + (end-start) + " ms");
-        }
+        }*/
 
     }
 }
