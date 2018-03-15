@@ -2,6 +2,7 @@ package ar.edu.itba.ss.domain;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.util.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,7 +161,7 @@ public class Particle {
 
     @Override
     public String toString() {
-        return String.format(Locale.US,"%.6f %.6f %.6f %.6f %.6f", x, y, getVx(),getVy(), angle);
+        return String.format(Locale.US,"%.6f %.6f %.6f %.6f %.6f", x, y, getVx(),getVy(), MathUtils.normalizeAngle(angle,FastMath.PI));
     }
 
     public void addNeighbour(Particle particle) {

@@ -100,8 +100,10 @@ public class Printer {
     }
 
     private String printParticles(int time) {
-        return particles.size()+"\n"+
+        return (particles.size()+2)+"\n"+
                 time + "\n" +
+                "0 0 0 0 0\n"+
+                L +" "+L+" 0 0 0\n"+
                 particles.stream()
                         .map(Particle::toString)
                         .collect(Collectors.joining("\n")) +"\n";
