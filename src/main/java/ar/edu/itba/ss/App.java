@@ -27,24 +27,24 @@ public class App
                 System.out.print("L:");
                 l = sc.nextDouble();
 
-                System.out.print("M:");
-                m = sc.nextInt();
+                //System.out.print("M:");
+                m = (int) FastMath.round(l-1);
 
-                System.out.print("rc:");
-                rc = sc.nextDouble();
+                //System.out.print("rc:");
+                rc = 1.0;
 
                 System.out.print("eta:");
                 eta = sc.nextDouble();
 
-                System.out.print("speed:");
-                speed = sc.nextDouble();
+                //System.out.print("speed:");
+                speed = 0.03;
 
                 System.out.print("steps:");
                 t = sc.nextInt();
 
 
-                System.out.print("periodicContourCondition:");
-                periodicContourCondition = sc.nextBoolean();
+                //System.out.print("periodicContourCondition:");
+                periodicContourCondition = true;
                 break;
             } catch (Exception e) {
                 System.out.println("Vuelva a intentar introducir los valores");
