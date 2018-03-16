@@ -40,6 +40,13 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ar.edu.itba.ss.App</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
