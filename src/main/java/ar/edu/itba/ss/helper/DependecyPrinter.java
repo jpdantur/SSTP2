@@ -20,6 +20,16 @@ public class DependecyPrinter {
     private static final String FILE_NAME_OVITO = "ovito.xyz";
 
     public DependecyPrinter(double l) {
+        try{
+            File file = new File(FILE_NAME_OVITO);
+
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+        }catch (Exception e){
+            System.out.println("problemas creando el archivo "+FILE_NAME_OVITO);
+        }
         L = l;
     }
 

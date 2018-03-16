@@ -53,12 +53,36 @@ public class AverageNormalizedVelocitySampler {
                 .collect(Collectors.toList());
     }
 
+    public List<List<Pair>> sampleRo(Integer N, List<Double> roVector, Double eta){
+        List<Double> dom = roVector.stream()
+                            .map(ro -> sqrt(N/ro))
+                            .collect(Collectors.toList());
+        return IntStream.range(0, nList.size())
+                .boxed()
+                .map(i -> sampleRoL(N, eta,  dom))
+                .collect(Collectors.toList());
+    }
+
     private List<Double> createDom(Double from, Double step, Double to) {
         List<Double> dom = new ArrayList<>();
         for(Double x = from; x <= to ; x += step){
             dom.add(x);
         }
         return dom;
+    }
+
+    private List<Pair> sampleRoL(Integer N, Double eta, List<Double> lVector){
+        List<Pair> pairs = new ArrayList<>();
+        for(Double L : lVector){
+            List<Particle> particles = new ParticleGenerator().generate(N, L, speed, rng);
+            BandadasDeAgentesAutopropulsados alg = new BandadasDeAgentesAutopropulsados(particles, L,
+                    M, rc,eta, periodicContourCondition, this.steps, rng);
+            alg.run(null);
+            double va = averageNormalizedVelocity(alg.getParticles(), speed);
+            Double ro = N/(L*L);
+            pairs.add(new Pair(ro, va));
+        }
+        return pairs;
     }
 
     private List<Pair> sampleEtaN(Integer N, Double L, List<Double> dom){
@@ -69,6 +93,7 @@ public class AverageNormalizedVelocitySampler {
                     M, rc,eta, periodicContourCondition, this.steps, rng);
             alg.run(null);
             double va = averageNormalizedVelocity(alg.getParticles(), speed);
+            System.out.println(va);
             pairs.add(new Pair(eta, va));
         }
         return pairs;
