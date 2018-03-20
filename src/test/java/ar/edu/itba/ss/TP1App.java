@@ -43,7 +43,7 @@ public class TP1App {
         }
 
         List<Particle> particles = new ParticleGenerator().generate(N, L, RADIX);
-        CIMPrinter printer = new CIMPrinter(particles, L, M, 2., periodicContourCondition, 0);
+        CIMPrinter printer = new CIMPrinter(particles, L, M, rc, periodicContourCondition, 0);
         printer.printFiles();
 
     }
