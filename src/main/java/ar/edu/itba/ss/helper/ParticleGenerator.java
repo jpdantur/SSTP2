@@ -6,6 +6,7 @@ import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,6 +21,14 @@ public class ParticleGenerator {
                         generator.nextUniform(0,L,true),
                         speed,
                         generator.nextUniform(0,2* FastMath.PI,true)))
+                .collect(Collectors.toList());
+    }
+
+    public List<Particle> generate(Integer N, Double L, Double radix) {
+        Long seed = new Double(Math.random()*100000).longValue();
+        Random generator = new Random(seed);
+        return IntStream.range(0,N)
+                .mapToObj(i ->new Particle(generator.nextDouble()*L, generator.nextDouble()*L, radix))
                 .collect(Collectors.toList());
     }
 }

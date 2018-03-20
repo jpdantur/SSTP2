@@ -18,6 +18,7 @@ public class Particle {
     private double angle;
     private double nextAngle;
     private List<Particle> neighbours = new ArrayList<>();
+    private Double radix;
 
     public Particle(double x, double y, double speed, double angle) {
         this.x = x;
@@ -26,12 +27,22 @@ public class Particle {
         this.angle = angle;
     }
 
+    public Particle(Double x, Double y, Double radix) {
+        this.x = x;
+        this.y = y;
+        this.radix = radix;
+    }
+
     public double getX() {
         return x;
     }
 
     public double getY() {
         return y;
+    }
+
+    public Double getRadix() {
+        return radix;
     }
 
     public void getNewAngle(double eta, RandomDataGenerator rng) {
@@ -70,6 +81,10 @@ public class Particle {
         else if (this.y<0)
             this.y+=length;
 
+    }
+
+    public Double distanceBorderToBorder(Particle particle){
+        return distanceCenterToCenter(particle) - (getRadix() + particle.getRadix());
     }
 
     private double distanceCenterToCenter(Particle particle) {
