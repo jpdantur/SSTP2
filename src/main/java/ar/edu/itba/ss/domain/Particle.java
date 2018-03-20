@@ -18,7 +18,7 @@ public class Particle {
     private double angle;
     private double nextAngle;
     private List<Particle> neighbours = new ArrayList<>();
-    private Double radix;
+    private double radix;
 
     public Particle(double x, double y, double speed, double angle) {
         this.x = x;
@@ -27,7 +27,7 @@ public class Particle {
         this.angle = angle;
     }
 
-    public Particle(Double x, Double y, Double radix) {
+    public Particle(double x, double y, double radix) {
         this.x = x;
         this.y = y;
         this.radix = radix;
@@ -41,7 +41,7 @@ public class Particle {
         return y;
     }
 
-    public Double getRadix() {
+    public double getRadix() {
         return radix;
     }
 
