@@ -57,7 +57,7 @@ public class BandadasDeAgentesAutopropulsados {
 
             //calculo de vecinos
             CellIndexMethod cim = new CellIndexMethod(M, L, rc, particles, periodicContourCondition);
-            calculated = cim.calculate();
+            cim.calculate();
 
             if(printer != null){
                 printer.printFiles(i, particles);

@@ -20,11 +20,11 @@ import static java.util.stream.Collectors.joining;
 public class CIMPrinter {
 
     private List<Particle> particles;
-    private Double L;
-    private Integer M;
-    private Double rc;
+    private double L;
+    private int M;
+    private double rc;
     private boolean periodicContourCondition;
-    private Integer selectedParticleIndex;
+    private int selectedParticleIndex;
 
     private static final String FILE_NAME_NEIGHBOURS = "neigbours.txt";
     private static final String FILE_NAME_OVITO = "ovito.xyz";
@@ -33,13 +33,10 @@ public class CIMPrinter {
     private static List<Double> COLOR_NEIGBOURH = Arrays.asList(1.00000,   0.30196,   0.58039);
     private static List<Double> COLOR_SELECTED = Arrays.asList(1.00000,   0.80000,   0.00000);
 
-    private Map<Particle, List<Particle>> calculated;
+    //private Map<Particle, List<Particle>> calculated;
     private Map<Particle, List<Double>> particlesColors = new HashMap<>();
 
-    public CIMPrinter(List<Particle> particles, Double l, Integer m, Double rc, boolean periodicContourCondition, Integer selectedParticleIndex) {
-        if(particles == null || l == null || m == null || rc == null || selectedParticleIndex == null){
-            throw new RuntimeException("Todos los argumentos son obligatorios");
-        }
+    public CIMPrinter(List<Particle> particles, double l, int m, double rc, boolean periodicContourCondition, int selectedParticleIndex) {
 
         if(particles.isEmpty() || particles.size()<2){
             throw new RuntimeException("Tiene que haber al menos dos particulas");
@@ -72,8 +69,9 @@ public class CIMPrinter {
     }
 
     public void printFiles(){
-        printNeighbours();
+        //printNeighbours();
         printForOvito();
+
     }
 
     private void printStringToFile(String filename, String content){
@@ -114,7 +112,7 @@ public class CIMPrinter {
     }
 
 
-    private void printNeighbours() {
+    /*private void printNeighbours() {
         StringBuffer sb = new StringBuffer();
         calculated.keySet().forEach(
             k -> sb.append(String.format(
@@ -125,11 +123,11 @@ public class CIMPrinter {
         );
 
         printStringToFile(FILE_NAME_NEIGHBOURS, sb.toString());
-    }
+    }*/
 
     private void calculate() {
         CellIndexMethod cim = new CellIndexMethod(M,L, rc, particles, periodicContourCondition);
-        calculated = cim.calculate();
+        cim.calculate();
         System.out.println("tiempo de procesamiento ( milisegundos ): " +cim.getTimeElapsed().toMillis());
     }
 }

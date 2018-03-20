@@ -16,8 +16,8 @@ public class TP1App {
     private static final Double RADIX = .1;
 
     public static void main(String[] args) {
-        Integer N, M;
-        Double L, rc;
+        int N, M;
+        double L, rc;
         boolean periodicContourCondition;
         while (true) {
             try {

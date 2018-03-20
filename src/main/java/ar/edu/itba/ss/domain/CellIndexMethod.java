@@ -20,6 +20,7 @@ public class CellIndexMethod {
 
     public CellIndexMethod(int m, double l, double rc, List<Particle> particles, boolean periodicContourCondition) {
         M = m;
+
         L = l;
         this.rc = rc;
         this.particles = particles;
@@ -34,10 +35,12 @@ public class CellIndexMethod {
         double offset = L/M;
 
         //calculo rangos del environment
-        List<Range> ranges = DoubleStream.iterate(0., d -> d + offset)
-                .limit(M).boxed()
-                .map(d -> new Range(d, d+ offset))
-                .collect(Collectors.toList());
+        List<Range> ranges = new ArrayList<>();
+        double d=0;
+        for (int i=0;i<M;i++){
+            ranges.add(new Range(i,d,d+offset));
+            d+=offset;
+        }
 
         //inicializo environment con celdas y asigno las particulas a cada celda
         for (int x = 0; x < M; x++) {
@@ -62,15 +65,14 @@ public class CellIndexMethod {
         }
     }
 
-    public Map<Particle, List<Particle>> calculate(){
+    public void calculate(){
         Instant b = Instant.now();
 
-        Map<Particle, List<Particle>> output =  particles.stream()
-                .collect(Collectors.toMap(p->p, this::calculateParticleNeighbours));
+        for (Particle p:particles)
+            calculateParticleNeighbours(p);
 
         Instant e = Instant.now();
         timeElapsed = Duration.between(b, e);
-        return output;
     }
 
     public Duration getTimeElapsed() {
@@ -88,7 +90,7 @@ public class CellIndexMethod {
             cell1 = environment[x][(y + 1) % M];
             cell2 = environment[(x + 1) % M][(y + 1) % M];
             cell3 = environment[(x + 1) % M][y];
-            cell4 = environment[(x + 1) % M][((y - 1) % M) < 0 ? ((y - 1) % M) + M : (y - 1) % M];
+            cell4 = environment[(x + 1) % M][(y - 1) < 0 ? M - 1 : (y - 1)];
         }else{
             cell1 = nullIfOutOfBounds(x, y+1);
             cell2 = nullIfOutOfBounds(x + 1,y + 1);

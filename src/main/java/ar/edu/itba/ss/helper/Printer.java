@@ -137,7 +137,7 @@ public class Printer {
 
     public void calculate() {
         CellIndexMethod cim = new CellIndexMethod(M, L, rc, particles, periodicContourCondition);
-        calculated = cim.calculate();
+        cim.calculate();
         //System.out.println("tiempo de procesamiento ( milisegundos ): " + cim.getTimeElapsed().toMillis());
     }
 

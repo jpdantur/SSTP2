@@ -49,18 +49,15 @@ public class Cell {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Cell cell = (Cell) o;
-
-        if (!rangeX.equals(cell.rangeX)) return false;
-        return rangeY.equals(cell.rangeY);
+        return Objects.equals(rangeX, cell.rangeX) &&
+                Objects.equals(rangeY, cell.rangeY);
     }
 
     @Override
     public int hashCode() {
-        int result = rangeX.hashCode();
-        result = 31 * result + rangeY.hashCode();
-        return result;
+
+        return Objects.hash(rangeX, rangeY);
     }
 
     private double getWidth(){
@@ -71,13 +68,13 @@ public class Cell {
         double w = getWidth();
         return
                 Arrays.asList(
-                        generateXY(-w,w),           generateXY(0.,w),      generateXY(w,w),
-                        generateXY(-w,0.),                                 generateXY(w,0.),
-                        generateXY(-w,-w),          generateXY(0.,-w),     generateXY(w,-w)
+                        generateXY(-1,1,-w,w),           generateXY(0,1,0.,w),      generateXY(1,1,w,w),
+                        generateXY(-1,0,-w,0.),                                 generateXY(1,0,w,0.),
+                        generateXY(-1,-1,-w,-w),          generateXY(0,-1,0.,-w),     generateXY(1,-1,w,-w)
                 );
     }
 
-    private Cell generateXY(double xOffset, double yOffset) {
+    private Cell generateXY(int xIdOff, int yIdOff, double xOffset, double yOffset) {
         double x1 = rangeX.getLowest() + xOffset;
         double x2 = rangeX.getHighest() + xOffset;
 
@@ -88,8 +85,8 @@ public class Cell {
             return null;
         }
 
-        Range new_rangex = new Range(x1,x2);
-        Range new_rangey = new Range(y1,y2);
+        Range new_rangex = new Range(rangeX.getId()+xIdOff,x1,x2);
+        Range new_rangey = new Range(rangeY.getId()+yIdOff,y1,y2);
         return new Cell(new_rangex, new_rangey);
     }
 

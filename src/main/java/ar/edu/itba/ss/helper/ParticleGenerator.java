@@ -24,11 +24,11 @@ public class ParticleGenerator {
                 .collect(Collectors.toList());
     }
 
-    public List<Particle> generate(Integer N, Double L, Double radix) {
-        Long seed = 1000L;//new Double(Math.random()*100000).longValue();
+    public List<Particle> generate(int N, double L, double radix) {
+        long seed = 1000L;//new Double(Math.random()*100000).longValue();
         Random generator = new Random(seed);
         return IntStream.range(0,N)
-                .mapToObj(i ->new Particle(generator.nextDouble()*L, generator.nextDouble()*L, radix))
+                .mapToObj(i ->new Particle(i,generator.nextDouble()*L, generator.nextDouble()*L, radix))
                 .collect(Collectors.toList());
     }
 }

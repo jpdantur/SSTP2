@@ -7,10 +7,12 @@ import org.apache.commons.math3.util.MathUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Particle {
 
+    private int id;
     private double x;
     private double y;
     private Cell cell;
@@ -27,7 +29,8 @@ public class Particle {
         this.angle = angle;
     }
 
-    public Particle(double x, double y, double radix) {
+    public Particle(int id, double x, double y, double radix) {
+        this.id=id;
         this.x = x;
         this.y = y;
         this.radix = radix;
@@ -132,7 +135,7 @@ public class Particle {
                 return particle.getX() - getCell().getRangeX().getHighest();
             }
         }
-        return getX();
+        return particle.getX();
     }
     private double getNewY(List<Cell> calculated, Particle particle) {
         if (!hasRangeY(calculated, particle.getCell().getRangeY())) {
@@ -142,7 +145,7 @@ public class Particle {
                 return particle.getY() - getCell().getRangeY().getHighest();
             }
         }
-        return getY();
+        return particle.getY();
 
     }
 

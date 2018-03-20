@@ -9,10 +9,17 @@ import java.util.Objects;
 public class Range {
     private double lowest;
     private double highest;
+    private int id;
 
-    public Range(double lowest, double highest) {
+    public Range(int id, double lowest, double highest) {
         this.lowest = lowest;
         this.highest = highest;
+        this.id=id;
+    }
+
+
+    public int getId() {
+        return id;
     }
 
     public double getLowest() {
@@ -35,15 +42,14 @@ public class Range {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Range)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Range range = (Range) o;
-        return Objects.equals(lowest, range.lowest) &&
-                Objects.equals(highest, range.highest);
+        return id == range.id;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(lowest, highest);
+        return Objects.hash(id);
     }
 }
