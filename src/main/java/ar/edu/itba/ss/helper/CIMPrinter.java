@@ -63,7 +63,7 @@ public class CIMPrinter {
     private void calculateColors() {
         Particle selectedParticle = particles.get(selectedParticleIndex);
         particlesColors.put(selectedParticle, COLOR_SELECTED);
-        List<Particle> selected = calculated.get(selectedParticle);
+        List<Particle> selected = selectedParticle.getNeighbours();
         selected.forEach(p-> particlesColors.put(p, COLOR_NEIGBOURH));
         particles.stream()
                 .filter(p -> !selected.contains(p))

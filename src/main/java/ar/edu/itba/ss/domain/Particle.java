@@ -208,4 +208,8 @@ public class Particle {
     public void clearNeighbours() {
         neighbours.clear();
     }
+
+    public List<Particle> getNeighbours() {
+        return neighbours;
+    }
 }

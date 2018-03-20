@@ -25,7 +25,7 @@ public class ParticleGenerator {
     }
 
     public List<Particle> generate(Integer N, Double L, Double radix) {
-        Long seed = new Double(Math.random()*100000).longValue();
+        Long seed = 1000L;//new Double(Math.random()*100000).longValue();
         Random generator = new Random(seed);
         return IntStream.range(0,N)
                 .mapToObj(i ->new Particle(generator.nextDouble()*L, generator.nextDouble()*L, radix))
